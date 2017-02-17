@@ -49,13 +49,13 @@ SPAR[0]=DW; SPAR[1]=I0; SPAR[2]=Bk;
 (FITPAR,FITPARLB,FITPARUB)=CD.PBA_Cone(CPAR,SPAR,ConeNumber)  
 
 MCPAR=np.zeros([7])
-MCPAR[0] = 2 # Chainnumber
+MCPAR[0] = 24 # Chainnumber
 MCPAR[1] = len(FITPAR)
-MCPAR[2] = 100 #stepnumber
+MCPAR[2] = 50000 #stepnumber
 MCPAR[3] = 0 #randomchains
 MCPAR[4] = 1 # Resampleinterval
-MCPAR[5] = 100 # stepbase
-MCPAR[6] = 100 # steplength
+MCPAR[5] = 70 # stepbase
+MCPAR[6] = 70 # steplength
 
 def ConeIntensitySim(FITPAR):
     H1 = 0
@@ -177,13 +177,13 @@ for i in range(int(MCPAR[0])):
     
 start_time = time.perf_counter()
 if __name__ =='__main__':  
-    pool = Pool(processes=2)
-    F=pool.map(MCMC_Cone,MCMC_List)
-    F=tuple(F)
-    np.save('LAMtest',F) # add savedfilename here
+    pool = Pool(processes=24)
+    SampledMatrix=pool.map(MCMC_Cone,MCMC_List)
+    SampledMatrix=tuple(SampledMatrix)
+    np.save('CHA_T2_R1',SampledMatrix) # add savedfilename here
     end_time=time.perf_counter()   
     print(end_time-start_time)    
-    ReSampledMatrix=F[0]
+    
 
 
   

@@ -12,13 +12,13 @@ import scipy.special as sp
 import os
 
 # Imports Intensity and Qx/Qr positions, normalizes lowest intensity to 1
-Intensity=np.loadtxt('AInt.txt')
-Qr = np.loadtxt('AQr.txt')
-Qz = np.loadtxt('AQz.txt')
+Intensity=np.loadtxt('EInt.txt')
+Qr = np.loadtxt('EQr.txt')
+Qz = np.loadtxt('EQz.txt')
 
 Intensity[np.isnan(Intensity)]=1
 IM=np.min(Intensity)
-Intensity=np.loadtxt('AInt.txt')
+Intensity=np.loadtxt('EInt.txt')
 
 Intensity=Intensity/IM
 
@@ -31,9 +31,9 @@ SLD=np.zeros(ConeNumber+1)
 Discretization = np.zeros(ConeNumber)
 Pitch = 120
 
-CPAR[0,0]= 22; CPAR[0,1]=160; SLD[0]=1;
-CPAR[1,0]= 27; CPAR[1,1]= 33;  SLD[1]=2.2;
-CPAR[2,0]=30; CPAR[2,1]=0; 
+CPAR[0,0]= 26; CPAR[0,1]=130; SLD[0]=1;
+CPAR[1,0]= 34; CPAR[1,1]= 40;  SLD[1]=2.2;
+CPAR[2,0]=38; CPAR[2,1]=0; 
 
 Coord=CD.CoordAssign(CPAR,SLD,ConeNumber,Pitch)
 
@@ -49,9 +49,9 @@ SPAR[0]=DW; SPAR[1]=I0; SPAR[2]=Bk;
 (FITPAR,FITPARLB,FITPARUB)=CD.PBA_Cone(CPAR,SPAR,ConeNumber)  
 
 MCPAR=np.zeros([7])
-MCPAR[0] = 2 # Chainnumber
+MCPAR[0] = 24 # Chainnumber
 MCPAR[1] = len(FITPAR)
-MCPAR[2] = 100 #stepnumber
+MCPAR[2] = 50000 #stepnumber
 MCPAR[3] = 0 #randomchains
 MCPAR[4] = 1 # Resampleinterval
 MCPAR[5] = 100 # stepbase
@@ -177,13 +177,12 @@ for i in range(int(MCPAR[0])):
     
 start_time = time.perf_counter()
 if __name__ =='__main__':  
-    pool = Pool(processes=2)
-    F=pool.map(MCMC_Cone,MCMC_List)
-    F=tuple(F)
-    np.save('LAMtest',F) # add savedfilename here
+    pool = Pool(processes=24)
+    SampledMatrix=pool.map(MCMC_Cone,MCMC_List)
+    SampledMatrix=tuple(SampledMatrix)
+    np.save('CH_E_T2_R1',SampledMatrix) # add savedfilename here
     end_time=time.perf_counter()   
     print(end_time-start_time)    
-    ReSampledMatrix=F[0]
 
 
   

@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+#SBATCH --partition=mml
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH -t 2-00:00
+python3.5 Si2_P25_C15_2_2.py
